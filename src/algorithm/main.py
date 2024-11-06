@@ -1,3 +1,28 @@
+def rec_int_mult_str(x, y):
+    """Compute product of two terms recursively
+
+    Usage examples:
+    >>> rec_int_mult_str('0', '2')
+    0
+    >>> rec_int_mult_str('2', '0')
+    0
+    >>> rec_int_mult_str('20', '10')
+    200
+    >>> rec_int_mult_str('2000', '1100')
+    2200000
+    """
+
+    if len(x) == 1 and len(y) == 1:
+        return int(x) * int(y)
+    
+    split = len(x) // 2
+    a, b = x[0:split], x[split:]
+    c, d = y[0:split], y[split:]
+    # We cheat a bit here by multiplying by powers of 10 which can be implemented purely as addition
+    return (10 ** len(x)) * rec_int_mult_str(a, c) + \
+            (10 ** split) * (rec_int_mult_str(a, d) +\
+                             rec_int_mult_str(b, c)) + rec_int_mult_str(b, d)
+
 def rec_int_mult(x: int, y: int) -> int:
     """Compute product of two terms recursively
 
@@ -27,10 +52,11 @@ def rec_int_mult(x: int, y: int) -> int:
         return x * y
 
     n = max(len(str(x)), len(str(y)))
-    if n % 2:
+    if n % 2 > 0:
         
         xpad = (n + 1) - len(str(x))
         ypad = (n + 1) - len(str(y))
+        
         x = "0" * xpad + str(x)
         y = "0" * ypad + str(y)
         a = int(x[0:len(x)//2])
@@ -45,7 +71,6 @@ def rec_int_mult(x: int, y: int) -> int:
         n = n + 1
         prod = int((10**n * ac) + 10**(int(n/2)) * (ad + bc) + bd)        
         return prod
-        # print(n, len(str(x)), len(str(y)), xpad, ypad, x, y, a, b, c, d)
 
     
 # if __name__ == "__main__":
